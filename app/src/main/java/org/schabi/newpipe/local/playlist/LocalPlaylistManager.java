@@ -12,6 +12,7 @@ import org.schabi.newpipe.database.playlist.model.PlaylistEntity;
 import org.schabi.newpipe.database.playlist.model.PlaylistStreamEntity;
 import org.schabi.newpipe.database.stream.dao.StreamDAO;
 import org.schabi.newpipe.database.stream.model.StreamEntity;
+import static org.schabi.newpipe.database.playlist.model.PlaylistEntity.LIKES_PLAYLIST_ID;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,7 +112,11 @@ public class LocalPlaylistManager {
     }
 
     public Flowable<List<PlaylistStreamEntry>> getPlaylistStreams(final long playlistId) {
-        return playlistStreamTable.getOrderedStreamsOf(playlistId).subscribeOn(Schedulers.io());
+        if (playlistId == LIKES_PLAYLIST_ID) {
+            return playlistStreamTable.getOrderedLikedStreams().subscribeOn(Schedulers.io());
+        } else {
+            return playlistStreamTable.getOrderedStreamsOf(playlistId).subscribeOn(Schedulers.io());
+        }
     }
 
     public Single<Integer> deletePlaylist(final long playlistId) {
