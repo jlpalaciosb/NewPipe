@@ -25,6 +25,8 @@ public class PlaylistEntity {
     public static final String PLAYLIST_THUMBNAIL_PERMANENT = "is_thumbnail_permanent";
     public static final String PLAYLIST_THUMBNAIL_STREAM_ID = "thumbnail_stream_id";
 
+    public static final long LIKES_PLAYLIST_ID = 1;
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = PLAYLIST_ID)
     private long uid = 0;
