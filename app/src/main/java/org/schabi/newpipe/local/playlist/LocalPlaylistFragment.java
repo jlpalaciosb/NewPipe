@@ -35,6 +35,7 @@ import org.schabi.newpipe.database.LocalItem;
 import org.schabi.newpipe.database.history.model.StreamHistoryEntry;
 import org.schabi.newpipe.database.playlist.PlaylistStreamEntry;
 import org.schabi.newpipe.database.playlist.model.PlaylistEntity;
+import static org.schabi.newpipe.database.playlist.model.PlaylistEntity.LIKES_PLAYLIST_ID;
 import org.schabi.newpipe.database.stream.model.StreamEntity;
 import org.schabi.newpipe.databinding.DialogEditTextBinding;
 import org.schabi.newpipe.databinding.LocalPlaylistHeaderBinding;
@@ -136,7 +137,11 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
         super.setTitle(title);
 
         if (headerBinding != null) {
-            headerBinding.playlistTitleView.setText(title);
+            if (playlistId == LIKES_PLAYLIST_ID) {
+                headerBinding.playlistTitleView.setText(R.string.likes_playlist_name);
+            } else {
+                headerBinding.playlistTitleView.setText(title);
+            }
         }
     }
 

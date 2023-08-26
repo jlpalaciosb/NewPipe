@@ -3,9 +3,11 @@ package org.schabi.newpipe.local.holder;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.schabi.newpipe.R;
 import org.schabi.newpipe.database.LocalItem;
 import org.schabi.newpipe.database.playlist.PlaylistDuplicatesEntry;
 import org.schabi.newpipe.database.playlist.PlaylistMetadataEntry;
+import static org.schabi.newpipe.database.playlist.model.PlaylistEntity.LIKES_PLAYLIST_ID;
 import org.schabi.newpipe.local.LocalItemBuilder;
 import org.schabi.newpipe.local.history.HistoryRecordManager;
 import org.schabi.newpipe.util.PicassoHelper;
@@ -38,7 +40,11 @@ public class LocalPlaylistItemHolder extends PlaylistItemHolder {
         itemTitleView.setText(item.name);
         itemStreamCountView.setText(Localization.localizeStreamCountMini(
                 itemStreamCountView.getContext(), item.streamCount));
-        itemUploaderView.setVisibility(View.INVISIBLE);
+        if (item.uid == LIKES_PLAYLIST_ID) {
+            itemUploaderView.setText(R.string.likes_playlist_name);
+        } else {
+            itemUploaderView.setVisibility(View.INVISIBLE);
+        }
 
         PicassoHelper.loadPlaylistThumbnail(item.thumbnailUrl).into(itemThumbnailView);
 
