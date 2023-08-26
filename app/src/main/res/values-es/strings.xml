@@ -240,6 +240,7 @@
     <string name="playlist_creation_success">Lista de reproducción creada</string>
     <string name="playlist_add_stream_success">Añadido a la lista de reproducción</string>
     <string name="playlist_thumbnail_change_success">Miniatura de lista de reproducción cambiada.</string>
+    <string name="likes_playlist_name">Tus me gusta</string>
     <string name="caption_none">Sin subtítulos</string>
     <string name="resize_fit">Ajustar</string>
     <string name="resize_fill">Rellenar</string>
