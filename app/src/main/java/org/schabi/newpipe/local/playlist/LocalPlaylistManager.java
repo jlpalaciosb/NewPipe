@@ -15,6 +15,7 @@ import org.schabi.newpipe.database.stream.model.StreamEntity;
 import static org.schabi.newpipe.database.playlist.model.PlaylistEntity.LIKES_PLAYLIST_ID;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
@@ -80,6 +81,11 @@ public class LocalPlaylistManager {
 
     public Completable updateJoin(final long playlistId, final List<Long> streamIds) {
         final List<PlaylistStreamEntity> joinEntities = new ArrayList<>(streamIds.size());
+
+        if (playlistId == LIKES_PLAYLIST_ID) {
+            Collections.reverse(streamIds);
+        }
+
         for (int i = 0; i < streamIds.size(); i++) {
             joinEntities.add(new PlaylistStreamEntity(playlistId, streamIds.get(i), i));
         }
@@ -95,8 +101,14 @@ public class LocalPlaylistManager {
     }
 
     public Flowable<List<PlaylistStreamEntry>> getDistinctPlaylistStreams(final long playlistId) {
-        return playlistStreamTable
-                .getStreamsWithoutDuplicates(playlistId).subscribeOn(Schedulers.io());
+        return playlistStreamTable.getStreamsWithoutDuplicates(playlistId)
+                .map(joinEntities -> {
+                    if (playlistId == LIKES_PLAYLIST_ID) {
+                        Collections.reverse(joinEntities);
+                    }
+                    return joinEntities;
+                })
+                .subscribeOn(Schedulers.io());
     }
 
     /**
@@ -112,11 +124,14 @@ public class LocalPlaylistManager {
     }
 
     public Flowable<List<PlaylistStreamEntry>> getPlaylistStreams(final long playlistId) {
-        if (playlistId == LIKES_PLAYLIST_ID) {
-            return playlistStreamTable.getOrderedLikedStreams().subscribeOn(Schedulers.io());
-        } else {
-            return playlistStreamTable.getOrderedStreamsOf(playlistId).subscribeOn(Schedulers.io());
-        }
+        return playlistStreamTable.getOrderedStreamsOf(playlistId)
+                .map(joinEntities -> {
+                    if (playlistId == LIKES_PLAYLIST_ID) {
+                        Collections.reverse(joinEntities);
+                    }
+                    return joinEntities;
+                })
+                .subscribeOn(Schedulers.io());
     }
 
     public Single<Integer> deletePlaylist(final long playlistId) {
