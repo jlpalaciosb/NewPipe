@@ -46,7 +46,11 @@ public class LocalPlaylistItemHolder extends PlaylistItemHolder {
             itemUploaderView.setVisibility(View.INVISIBLE);
         }
 
-        PicassoHelper.loadPlaylistThumbnail(item.thumbnailUrl).into(itemThumbnailView);
+        if (item.uid == LIKES_PLAYLIST_ID) {
+            PicassoHelper.loadLikesPlaylistThumbnail().into(itemThumbnailView);
+        } else {
+            PicassoHelper.loadPlaylistThumbnail(item.thumbnailUrl).into(itemThumbnailView);
+        }
 
         if (item instanceof PlaylistDuplicatesEntry
                 && ((PlaylistDuplicatesEntry) item).timesStreamIsContained > 0) {

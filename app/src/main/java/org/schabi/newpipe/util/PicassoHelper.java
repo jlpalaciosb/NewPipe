@@ -116,6 +116,10 @@ public final class PicassoHelper {
         return loadImageDefault(url, R.drawable.placeholder_thumbnail_playlist);
     }
 
+    public static RequestCreator loadLikesPlaylistThumbnail() {
+        return loadImageDefault(null, R.drawable.likes_playlist_thumbnail);
+    }
+
     public static RequestCreator loadSeekbarThumbnailPreview(final String url) {
         return picassoInstance.load(url);
     }
